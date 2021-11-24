@@ -1,0 +1,32 @@
+{
+  "name": "better-strint",
+  "version": "1.0.0",
+  "description": "strint – a JavaScript library for string-encoded integers",
+  "main": "src/index.js",
+  "module": "dist/better-strint.esm.js",
+  "scripts": {
+    "build": "rollup -c",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lang1427/better-strint.git"
+  },
+  "keywords": [],
+  "author": "Wei Zhixiang",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "rollup": "^2.59.0",
+    "rollup-plugin-banner": "^0.2.1",
+    "rollup-plugin-uglify": "^6.0.4"
+  },
+  "bugs": {
+    "url": "https://github.com/lang1427/better-strint/issues"
+  },
+  "homepage": "https://github.com/lang1427/better-strint#readme"
+}
