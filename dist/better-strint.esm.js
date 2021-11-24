@@ -410,6 +410,25 @@ var mul = function mul(lhs, rhs) {
   return sameSign(lhs, rhs) ? absResult : negate(absResult);
 };
 
+var pow = function pow(val, num) {
+  if (num < 0) {
+    throw "pow function not support negative number";
+  }
+
+  if (num == 0) return 1;
+  if (num == 1) return val;
+  if (num == 2) return mul(val, val);
+  var a = mul(val, val),
+      b = "";
+
+  for (var i = 3; i <= num; i++) {
+    b = mul(a, val);
+    a = b;
+  }
+
+  return b;
+};
+
 var sum = function sum() {
   for (var _len = arguments.length, arg = new Array(_len), _key = 0; _key < _len; _key++) {
     arg[_key] = arguments[_key];
@@ -434,6 +453,7 @@ var index = {
   mulPositive: mulPositive,
   negate: negate,
   normalize: normalize,
+  pow: pow,
   quotientRemainderPositive: quotientRemainderPositive,
   sub: sub,
   subPositive: subPositive,

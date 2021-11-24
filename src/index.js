@@ -11,6 +11,7 @@ import { mul } from './core/mul'
 import { mulPositive } from './core/mulPositive'
 import { negate } from './core/negate'
 import { normalize } from './core/normalize'
+import { pow } from './core/pow'
 import { quotientRemainderPositive } from './core/quotientRemainderPositive'
 import { sub } from './core/sub'
 import { subPositive } from './core/subPositive'
@@ -32,6 +33,7 @@ export default {
     mulPositive,
     negate,
     normalize,
+    pow,
     quotientRemainderPositive,
     sub,
     subPositive,
