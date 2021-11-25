@@ -7,8 +7,8 @@ import { gt } from './core/gt'
 import { isNegative } from './core/isNegative'
 import { isPositive } from './core/isPositive'
 import { lt } from './core/lt'
-import { mul } from './core/mul'
-import { mulPositive } from './core/mulPositive'
+// import { mul } from './core/mul'
+// import { mulPositive } from './core/mulPositive'
 import { negate } from './core/negate'
 import { normalize } from './core/normalize'
 import { pow } from './core/pow'
@@ -17,6 +17,8 @@ import { sub } from './core/sub'
 import { subPositive } from './core/subPositive'
 import { sum } from './core/sum'
 import { timesDigit } from './core/timesDigit'
+
+import { multiply } from './core/calculation'
 
 
 export default {
@@ -29,8 +31,8 @@ export default {
     isNegative,
     isPositive,
     lt,
-    mul,
-    mulPositive,
+    // mul,
+    // mulPositive,
     negate,
     normalize,
     pow,
@@ -38,5 +40,7 @@ export default {
     sub,
     subPositive,
     sum,
-    timesDigit
+    timesDigit,
+
+    multiply
 }

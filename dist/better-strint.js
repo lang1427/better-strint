@@ -351,6 +351,97 @@
     return sameSign(dividend, divisor) ? absResult : negate(absResult);
   };
 
+  // 不可使用负数
+
+  var multiply = function multiply(A, B) {
+    var result = [];
+    A += '', B += '';
+    var l = -4; // 以支持百万位精确运算，但速度减半
+
+    var r1 = [],
+        r2 = [];
+
+    while (A !== '') {
+      r1.unshift(parseInt(A.substr(l)));
+      A = A.slice(0, l);
+    }
+
+    while (B !== '') {
+      r2.unshift(parseInt(B.substr(l)));
+      B = B.slice(0, l);
+    }
+
+    var index, value;
+
+    for (var i = 0; i < r1.length; i++) {
+      for (var j = 0; j < r2.length; j++) {
+        value = 0;
+
+        if (r1[i] && r2[j]) {
+          value = r1[i] * r2[j];
+        }
+
+        index = i + j;
+
+        if (result[index]) {
+          result[index] += value;
+        } else {
+          result[index] = value;
+        }
+      }
+    }
+
+    for (var _i4 = result.length - 1; _i4 > 0; _i4--) {
+      result[_i4] += '';
+
+      if (result[_i4].length > -l) {
+        result[_i4 - 1] += parseInt(result[_i4].slice(0, l));
+        result[_i4] = result[_i4].substr(l);
+      }
+
+      while (result[_i4].length < -l) {
+        result[_i4] = '0' + result[_i4];
+      }
+    }
+
+    if (result[0]) {
+      result = result.join('');
+    } else {
+      result = '0';
+    }
+
+    return result;
+  }; // +
+
+  var pow = function pow(val, num) {
+    if (num < 0) {
+      throw "pow function not support negative number";
+    }
+
+    if (num == 0) return 1;
+    if (num == 1) return val;
+    if (num == 2) return multiply(val, val);
+    var a = multiply(val, val),
+        b = "";
+
+    for (var i = 3; i <= num; i++) {
+      b = multiply(a, val);
+      a = b;
+    }
+
+    return b;
+  };
+
+  var sum = function sum() {
+    for (var _len = arguments.length, arg = new Array(_len), _key = 0; _key < _len; _key++) {
+      arg[_key] = arguments[_key];
+    }
+
+    return arg.reduce(function (pre, cur) {
+      return add(pre, cur);
+    });
+  };
+
   var timesDigit = function timesDigit(strint, digit) {
     forcePositiveString(strint);
     forceNumber(digit);
@@ -383,68 +474,6 @@
     return result.length === 0 ? "0" : result;
   };
 
-  var mulPositive = function mulPositive(lhs, rhs) {
-    /* Example via http://en.wikipedia.org/wiki/Multiplication_algorithm
-            23958233
-                5830 ×
-        ------------
-            00000000 ( =      23,958,233 ×     0)
-           71874699  ( =      23,958,233 ×    30)
-         191665864   ( =      23,958,233 ×   800)
-        119791165    ( =      23,958,233 × 5,000)
-        ------------
-        139676498390 ( = 139,676,498,390        )
-     */
-    forcePositiveString(lhs);
-    forcePositiveString(rhs);
-    var result = "0";
-    var digitCount = getDigitCount(rhs);
-
-    for (var i = 0; i < digitCount; i++) {
-      var singleRow = timesDigit(lhs, Number(getDigit(rhs, i)));
-      singleRow = shiftLeft(singleRow, i);
-      result = addPositive(result, singleRow);
-    }
-
-    return result;
-  };
-
-  var mul = function mul(lhs, rhs) {
-    forceString(lhs);
-    forceString(rhs);
-    var absResult = mulPositive(abs(lhs), abs(rhs));
-    return sameSign(lhs, rhs) ? absResult : negate(absResult);
-  };
-
-  var pow = function pow(val, num) {
-    if (num < 0) {
-      throw "pow function not support negative number";
-    }
-
-    if (num == 0) return 1;
-    if (num == 1) return val;
-    if (num == 2) return mul(val, val);
-    var a = mul(val, val),
-        b = "";
-
-    for (var i = 3; i <= num; i++) {
-      b = mul(a, val);
-      a = b;
-    }
-
-    return b;
-  };
-
-  var sum = function sum() {
-    for (var _len = arguments.length, arg = new Array(_len), _key = 0; _key < _len; _key++) {
-      arg[_key] = arguments[_key];
-    }
-
-    return arg.reduce(function (pre, cur) {
-      return add(pre, cur);
-    });
-  };
-
   var index = {
     abs: abs,
     add: add,
@@ -455,8 +484,8 @@
     isNegative: isNegative,
     isPositive: isPositive,
     lt: lt,
-    mul: mul,
-    mulPositive: mulPositive,
+    // mul,
+    // mulPositive,
     negate: negate,
     normalize: normalize,
     pow: pow,
@@ -464,7 +493,8 @@
     sub: sub,
     subPositive: subPositive,
     sum: sum,
-    timesDigit: timesDigit
+    timesDigit: timesDigit,
+    multiply: multiply
   };
 
   return index;
