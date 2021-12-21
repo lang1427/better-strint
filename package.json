@@ -1,6 +1,6 @@
 {
   "name": "better-strint",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "better-strint – a JavaScript library for string-encoded integers",
   "main": "src/index.js",
   "module": "dist/better-strint.esm.js",
@@ -12,7 +12,7 @@
     "type": "git",
     "url": "git+https://github.com/lang1427/better-strint.git"
   },
-  "keywords": [],
+  "keywords": ["better-strint","strint","javascript","ES6"],
   "author": "Wei Zhixiang",
   "license": "MIT",
   "devDependencies": {

@@ -5,7 +5,6 @@ import { forcePositiveString, forceNumber } from '../type-checks'
 export const prefixZeros = function (strint, zeroCount) {
     forcePositiveString(strint);
     forceNumber(zeroCount);
-
     var result = strint;
     for (var i = 0; i < zeroCount; i++) {
         result = "0" + result;

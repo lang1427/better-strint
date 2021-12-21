@@ -1,6 +1,6 @@
 /**
  * better-strint
- * v1.0.0
+ * v1.0.2
  * by Wei Zhixiang
  * https://github.com/lang1427/better-strint
  */
@@ -45,7 +45,7 @@
   function forceString(value) {
     forceType(value, "string");
 
-    if (!/^[\-]{0,1}[0-9]+$/.test(value)) {
+    if (!/^[\-]{0,1}[0-9]+$/.test(value) && value !== "") {
       throw new Error(value + ": " + "Only natural positive and negative integers from 0 to 9 can appear, excluding the + sign");
     }
   }
@@ -389,8 +389,17 @@
   // 不可使用负数
 
   var multiply = function multiply(A, B) {
+    forceString(A);
+    forceString(B);
+    var same_sing_flag = false;
+
+    if (!sameSign(A, B)) {
+      same_sing_flag = true;
+    }
+
+    isNegative(A) ? A = A.slice(1) : A;
+    isNegative(B) ? B = B.slice(1) : B;
     var result = [];
-    A += '', B += '';
     var l = -4; // 以支持百万位精确运算，但速度减半
 
     var r1 = [],
@@ -445,7 +454,7 @@
       result = '0';
     }
 
-    return result;
+    return same_sing_flag ? "-" + result : result;
   }; // +
 
   var pow = function pow(val, num) {

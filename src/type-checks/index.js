@@ -21,7 +21,7 @@ export function forceType(value, type) {
 /** 强制字符串类型 字符串类型只能出现0~9的自然正负整数,不包含+号（也就是说/^[\-]{0,1}[0-9]+$/） */
 export function forceString(value) {
     forceType(value, "string");
-    if (!/^[\-]{0,1}[0-9]+$/.test(value)) {
+    if ((!/^[\-]{0,1}[0-9]+$/.test(value) && value !== "")) {
         throw new Error(value + ": " + "Only natural positive and negative integers from 0 to 9 can appear, excluding the + sign")
     }
 }
@@ -37,7 +37,7 @@ export function forcePositiveString(value) {
 /** 强制数字类型 数字类型不能是小数 必须大于等于0*/
 export function forceNumber(value) {
     forceType(value, "number");
-    if(!Number.isInteger(value)){
+    if (!Number.isInteger(value)) {
         throw new Error("Condition isInteger failed for value " + value);
     }
     if (value < 0) {

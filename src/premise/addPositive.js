@@ -4,7 +4,6 @@ import { prefixZeros } from "./prefixZeros";
 export const addPositive = function (x, y) {
     forcePositiveString(x);
     forcePositiveString(y);
-
     var maxLength = Math.max(x.length, y.length);
     var result = "";
     var borrow = 0;

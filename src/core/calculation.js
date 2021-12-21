@@ -1,6 +1,10 @@
 
 // 不可使用负数
 
+import { forceString } from '../type-checks'
+import { sameSign } from '../premise/sameSign'
+import { isNegative } from "../util"
+
 function compare(p, q) {
     while (p[0] === '0') {
         p = p.substr(1);
@@ -115,8 +119,18 @@ export const divide = (A, B) => {
 }
 // *
 export const multiply = (A, B) => {
+
+    forceString(A)
+    forceString(B)
+    let same_sing_flag = false
+    if (!sameSign(A, B)) {
+        same_sing_flag = true
+    }
+    isNegative(A) ? A = A.slice(1) : A
+    isNegative(B) ? B = B.slice(1) : B
+
     let result = [];
-    (A += ''), (B += '');
+
     const l = -4; // 以支持百万位精确运算，但速度减半
 
     let r1 = [],
@@ -159,7 +173,7 @@ export const multiply = (A, B) => {
     } else {
         result = '0';
     }
-    return result;
+    return same_sing_flag ? "-" + result : result;
 }
 // +
 export const add = (A, B) => {

@@ -3,8 +3,35 @@
 BetterStrint – a JavaScript library for string-encoded integers
 
 
-BetterStrint is a plug-in designed to deal with arbitrarily large integers. The core inspiration comes from the implementation of [strint](https://github.com/rauschma/strint), so BetterStrint API is generally compatible with strint. More importantly, BetterStrint also extends some functions
+**`BetterStrint`** is a plug-in designed to deal with arbitrarily large integers. The core inspiration comes from the implementation of [strint](https://github.com/rauschma/strint), so BetterStrint API is generally compatible with strint. More importantly, BetterStrint also extends some functions
 
+> Support the calculation of positive and negative numbers (addition, subtraction, multiplication, division, etc.), comparison (greater than less than, etc.)
+
+## Install
+
+```
+npm install better-strint -S
+```
+
+```javascript
+import BetterStrint from 'better-strint'
+ 
+console.log(BetterStrint.add("123","456"))  // 579
+```
+
+
+## CDN
+
+```html
+<script src="https://unpkg.com/better-strint@latest/dist/better-strint.js"></script>
+
+<!-- minify -->
+<script src="https://unpkg.com/better-strint@latest/dist/better-strint.min.js"></script>
+```
+
+```javascript
+console.log(BetterStrint.add("123","456"))  // 579
+```
 
 
 ## API
