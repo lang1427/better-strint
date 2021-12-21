@@ -1,8 +1,7 @@
 import { forceString } from '../type-checks'
-import { isPositive } from './isPositive';
 import { addPositive } from '../premise/addPositive'
 import { negate } from './negate';
-import { isNegative } from './isNegative'
+import { isNegative, isPositive } from '../util'
 import { lt } from './lt';
 import { abs } from './abs';
 import { subPositive } from './subPositive';

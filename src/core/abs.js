@@ -1,4 +1,4 @@
-import { isNegative } from "./isNegative";
+import { isNegative } from "../util";
 import { negate } from "./negate";
 export const abs = function (strint) {
     if (isNegative(strint)) {

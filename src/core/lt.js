@@ -1,13 +1,11 @@
-import { forcePositiveString } from "../type-checks";
-import { forceNonNegativeNumber } from "../type-checks";
+import { forcePositiveString, forceNumber } from "../type-checks";
 import { prefixZeros } from '../premise/prefixZeros'
-import { isNegative } from "./isNegative";
-import { isPositive } from "./isPositive";
+import { isNegative, isPositive } from "../util";
 import { abs } from './abs'
 
 const leftPadZeros = function (strint, digitCount) {
     forcePositiveString(strint);
-    forceNonNegativeNumber(digitCount);
+    forceNumber(digitCount);
 
     return prefixZeros(strint, digitCount - strint.length);
 }

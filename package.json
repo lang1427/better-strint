@@ -1,7 +1,7 @@
 {
   "name": "better-strint",
   "version": "1.0.0",
-  "description": "strint – a JavaScript library for string-encoded integers",
+  "description": "better-strint – a JavaScript library for string-encoded integers",
   "main": "src/index.js",
   "module": "dist/better-strint.esm.js",
   "scripts": {
@@ -14,7 +14,7 @@
   },
   "keywords": [],
   "author": "Wei Zhixiang",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.0",

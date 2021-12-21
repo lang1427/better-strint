@@ -2,7 +2,7 @@ import { forcePositiveString } from "../type-checks";
 import { eq } from './eq'
 import { gt } from './gt'
 import { ge } from './ge'
-import { normalize } from "./normalize";
+import { normalize } from "../util";
 import { sub } from './sub'
 import { add } from './add'
 import { shiftLeft } from '../premise/shiftLeft'

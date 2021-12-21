@@ -1,4 +1,6 @@
-import { isNegative } from "./isNegative";
+import { isNegative } from "../util";
+
+/** 取反 */
 export const negate = function (strint) {
     if (strint === "0") {
         return "0";

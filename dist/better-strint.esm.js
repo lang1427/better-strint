@@ -21,42 +21,77 @@ function _typeof(obj) {
   return _typeof(obj);
 }
 
-var isPositive = function isPositive(strint) {
-  return !isNegative(strint);
-};
-
-function forceNonNegativeNumber(value) {
-  forceType(value, "number");
-
-  if (value < 0) {
-    throw new Error("Expected a positive number: " + value);
-  }
-}
 function forceCondition(value, condition, conditionName) {
   if (!condition.call(null, value)) {
+    // 对于值 value , 条件 conditionName 失败
     throw new Error("Condition " + conditionName + " failed for value " + value);
   }
 }
+/** 强制类型 */
+
 function forceType(value, type) {
   if (_typeof(value) !== type) {
     throw new Error("Not a " + type + ": " + value);
   }
 }
+/** 强制字符串类型 字符串类型只能出现0~9的自然正负整数,不包含+号（也就是说/^[\-]{0,1}[0-9]+$/） */
+
 function forceString(value) {
   forceType(value, "string");
+
+  if (!/^[\-]{0,1}[0-9]+$/.test(value)) {
+    throw new Error(value + ": " + "Only natural positive and negative integers from 0 to 9 can appear, excluding the + sign");
+  }
 }
+/** 强制正整数字符串 */
+
 function forcePositiveString(value) {
   forceString(value);
   forceCondition(value, isPositive, "isPositive");
 }
+/** 强制数字类型 数字类型不能是小数 必须大于等于0*/
+
 function forceNumber(value) {
   forceType(value, "number");
+
+  if (!Number.isInteger(value)) {
+    throw new Error("Condition isInteger failed for value " + value);
+  }
+
+  if (value < 0) {
+    // 预期为正数: value
+    throw new Error("Expected a positive number: " + value);
+  }
 }
 
 var isNegative = function isNegative(strint) {
   forceString(strint);
   return strint.indexOf("-") === 0;
 };
+/** 是正数 */
+
+var isPositive = function isPositive(strint) {
+  return !isNegative(strint);
+};
+/** 字符串标准化(只能出现0~9的自然正负整数,不包含+号) */
+
+var RE_NON_ZERO = /^(-?)0*([1-9][0-9]*)$/;
+var RE_ZERO = /^0+$/;
+var normalize = function normalize(strint) {
+  if (RE_ZERO.test(strint)) {
+    return "0";
+  }
+
+  var match = RE_NON_ZERO.exec(strint);
+
+  if (!match) {
+    throw new Error("Illegal strint format: " + strint);
+  }
+
+  return match[1] + match[2];
+};
+
+/** 取反 */
 
 var negate = function negate(strint) {
   if (strint === "0") {
@@ -78,6 +113,8 @@ var abs = function abs(strint) {
   }
 };
 
+/** 获取数字的长度，除去减号(-) */
+
 var getDigitCount = function getDigitCount(strint) {
   if (isNegative(strint)) {
     return strint.length - 1;
@@ -85,6 +122,9 @@ var getDigitCount = function getDigitCount(strint) {
     return strint.length;
   }
 };
+
+/** 获取数字
+ * 从后获取字符串参数1中参数2对应索引的值  */
 
 var getDigit = function getDigit(x, digitIndex) {
   forceString(x);
@@ -97,9 +137,12 @@ var getDigit = function getDigit(x, digitIndex) {
   }
 };
 
+/** 向字符串前补0
+ * 参数1：要补0的字符串；   参数2：补0的个数 */
+
 var prefixZeros = function prefixZeros(strint, zeroCount) {
   forcePositiveString(strint);
-  forceNonNegativeNumber(zeroCount);
+  forceNumber(zeroCount);
   var result = strint;
 
   for (var i = 0; i < zeroCount; i++) {
@@ -145,7 +188,7 @@ var addPositive = function addPositive(x, y) {
 
 var leftPadZeros = function leftPadZeros(strint, digitCount) {
   forcePositiveString(strint);
-  forceNonNegativeNumber(digitCount);
+  forceNumber(digitCount);
   return prefixZeros(strint, digitCount - strint.length);
 };
 
@@ -241,22 +284,6 @@ var add = function add(x, y) {
   }
 };
 
-var RE_NON_ZERO = /^(-?)0*([1-9][0-9]*)$/;
-var RE_ZERO = /^0+$/;
-var normalize = function normalize(strint) {
-  if (RE_ZERO.test(strint)) {
-    return "0";
-  }
-
-  var match = RE_NON_ZERO.exec(strint);
-
-  if (!match) {
-    throw new Error("Illegal strint format: " + strint);
-  }
-
-  return match[1] + match[2];
-};
-
 var eq = function eq(lhs, rhs) {
   return normalize(lhs) === normalize(rhs);
 };
@@ -272,6 +299,7 @@ var sub = function sub(x, y) {
   return add(x, negate(y));
 };
 
+/** 左移  */
 var shiftLeft = function shiftLeft(strint, digitCount) {
   while (digitCount > 0) {
     strint = strint + "0";
@@ -334,6 +362,8 @@ var quotientRemainderPositive = function quotientRemainderPositive(dividend, div
   }
 };
 
+/** 验证两个数是否同号（同为正数/负数） */
+
 var sameSign = function sameSign(lhs, rhs) {
   return isPositive(lhs) === isPositive(rhs);
 };
@@ -343,6 +373,11 @@ var div = function div(dividend, divisor) {
   forceString(divisor);
   var absResult = quotientRemainderPositive(abs(dividend), abs(divisor))[0];
   return sameSign(dividend, divisor) ? absResult : negate(absResult);
+};
+
+var le = function le(lhs, rhs) {
+  if (eq(lhs, rhs)) return true;
+  return lt(lhs, rhs);
 };
 
 // 不可使用负数
@@ -408,10 +443,8 @@ var multiply = function multiply(A, B) {
 }; // +
 
 var pow = function pow(val, num) {
-  if (num < 0) {
-    throw "pow function not support negative number";
-  }
-
+  forceString(val);
+  forceNumber(num);
   if (num == 0) return 1;
   if (num == 1) return val;
   if (num == 2) return multiply(val, val);
@@ -436,38 +469,6 @@ var sum = function sum() {
   });
 };
 
-var timesDigit = function timesDigit(strint, digit) {
-  forcePositiveString(strint);
-  forceNumber(digit);
-  var result = "";
-  var digitCount = getDigitCount(strint);
-  var carry = 0;
-  var leadingZeros = 0;
-
-  for (var i = 0; i < digitCount; i++) {
-    var digitResult = Number(getDigit(strint, i)) * digit + carry;
-    carry = 0;
-
-    while (digitResult >= 10) {
-      digitResult -= 10;
-      carry++;
-    }
-
-    if (digitResult === 0) {
-      leadingZeros++;
-    } else {
-      result = String(digitResult) + prefixZeros(result, leadingZeros);
-      leadingZeros = 0;
-    }
-  }
-
-  if (carry > 0) {
-    result = String(carry) + result;
-  }
-
-  return result.length === 0 ? "0" : result;
-};
-
 var index = {
   abs: abs,
   add: add,
@@ -475,19 +476,14 @@ var index = {
   eq: eq,
   ge: ge,
   gt: gt,
-  isNegative: isNegative,
-  isPositive: isPositive,
+  le: le,
   lt: lt,
-  // mul,
-  // mulPositive,
   negate: negate,
-  normalize: normalize,
   pow: pow,
   quotientRemainderPositive: quotientRemainderPositive,
   sub: sub,
   subPositive: subPositive,
   sum: sum,
-  timesDigit: timesDigit,
   multiply: multiply
 };
 
